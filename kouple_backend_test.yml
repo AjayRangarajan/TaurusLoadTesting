@@ -1,0 +1,31 @@
+execution:
+  iterations: 30
+  concurrency: 1
+  hold-for: 2m
+  ramp-up: 40s
+  scenario: kouple-backend
+
+scenarios:
+  kouple-backend:
+    requests:
+      - url: https://kouple-backend-docker.herokuapp.com/kouple/v1/api/auth/verify/otp
+        method: POST
+        label: verifyOTP
+        content-encoding: utf-8
+        body-file: ./verifyOTP.json
+        headers: 
+          Accept: "application/json"
+          Content-Type: "application/json"
+        extract-jsonpath: 
+          accessToken:
+            jsonpath: $.data.accessToken
+            default: null
+
+      - url: https://kouple-backend-docker.herokuapp.com/kouple/v1/api/account/user/profile
+        method: GET
+        label: getUserProfile
+        content-encoding: utf-8
+        headers: 
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer ${accessToken}"
