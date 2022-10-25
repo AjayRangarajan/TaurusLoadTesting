@@ -5,6 +5,7 @@ __pycache__/
 
 # Artifact directory
 *-*/
+TaurusResult/
 
 # log file
 jmeter.log
